@@ -14,6 +14,10 @@ Catwalk downloads random cat images from [CATAAS](https://cataas.com/) and displ
 - 📦 Small and self-contained
 - 🐧 Linux and 🪟 Windows compatible
 
+## Demo
+
+![Catwalk demo](docs/demo.gif)
+
 ## Download
 
 Prebuilt binaries are available here:
