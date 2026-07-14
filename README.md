@@ -128,7 +128,7 @@ pyinstaller \
 
 **Windows**
 ```
-pyinstaller --onefile --hidden-import=PIL._tkinter_finder --name=Catwalk src\catwalk.py
+pyinstaller --onefile --hidden-import=PIL._tkinter_finder --windowed --name=Catwalk src\catwalk.py
 ```
 
 The executable will be created in:
