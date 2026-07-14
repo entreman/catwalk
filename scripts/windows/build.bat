@@ -7,6 +7,6 @@ pyinstaller --onefile ^
     --hidden-import=PIL._tkinter_finder ^
     --windowed ^
     --name=Catwalk ^
-    --icon=assets\catwalk.ico ^
+    --icon=assets\catwalk_white.ico ^
     --add-data "assets;assets" ^
     src\catwalk.py
