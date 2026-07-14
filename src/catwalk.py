@@ -7,11 +7,19 @@ import threading
 import time
 import requests
 import tkinter as tk
+import sys
+
 
 from PIL import Image, ImageTk
 from pathlib import Path
         
 URL = "https://cataas.com/cat"
+
+
+def resource_path(relative_path):
+    if hasattr(sys, "_MEIPASS"):
+        return Path(sys._MEIPASS) / relative_path
+    return Path(__file__).resolve().parent.parent / relative_path
 
 
 def downloader(stop_event, image_queue, delay):
@@ -78,8 +86,8 @@ root.attributes("-fullscreen", True)
 root.configure(bg="black")
 root.config(cursor="none")
 
-icon_path = Path(__file__).parent.parent / "assets" / "catwalk.png"
-icon = tk.PhotoImage(file=icon_path)
+icon_path = "assets/catwalk.png"
+icon = tk.PhotoImage(file=resource_path(icon_path))
 root.iconphoto(True, icon)
 
 screen_width = root.winfo_screenwidth()

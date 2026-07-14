@@ -8,8 +8,8 @@ pip install -r requirements.txt
 pyinstaller \
   --onefile \
   --hidden-import=PIL._tkinter_finder \
+  --windowed \
+  --add-data "assets:assets" \
   src/catwalk.py
 
 
-#options
-#  --windowed \
