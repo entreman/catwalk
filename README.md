@@ -14,6 +14,13 @@ Catwalk downloads random cat images from [CATAAS](https://cataas.com/) and displ
 - 📦 Small and self-contained
 - 🐧 Linux and 🪟 Windows compatible
 
+## Download
+
+Prebuilt binaries are available here:
+
+- 🪟 Windows: [Catwalk.exe](https://github.com/entreman/catwalk/releases/latest/download/Catwalk.exe)
+- 🐧 Linux: [catwalk](https://github.com/entreman/catwalk/releases/latest/download/catwalk)
+
 ## Installation
 
 ### Clone the repository:
