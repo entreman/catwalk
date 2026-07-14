@@ -19,7 +19,7 @@ Catwalk downloads random cat images from [CATAAS](https://cataas.com/) and displ
 ### Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/entreman/catwalk.git
 cd catwalk
 ```
 
@@ -59,9 +59,6 @@ python catwalk.py
 3 seconds per image
 
 ### Set a custom delay:
-```
-python catwalk.py 5
-```
 
 Example:
 ```
@@ -102,10 +99,10 @@ Catwalk uses a simple producer-consumer design:
 The downloader fetches images in the background while the viewer displays them. A queue keeps the two parts independent and prevents the display from blocking on network requests.
 
 ## Dependencies
-Python 3
-Pillow
-Requests
-Tkinter (usually included with Python)
+- Python 3
+- Pillow
+- Requests
+- Tkinter (usually included with Python)
 
 Install with:
 ```
@@ -120,8 +117,17 @@ pip install pyinstaller
 ```
 
 Build:
+**Linux**
 ```
-pyinstaller --onefile --windowed catwalk.py
+pyinstaller \
+  --onefile \
+  --hidden-import=PIL._tkinter_finder \
+  src/catwalk.py
+```
+
+**Windows**
+```
+pyinstaller --onefile --hidden-import=PIL._tkinter_finder --name=Catwalk src\catwalk.py
 ```
 
 The executable will be created in:
@@ -133,16 +139,6 @@ Build separately on each target platform:
 
 - Linux → Linux executable
 - Windows → .exe
-
-
-## Project structure
-catwalk/
-├── catwalk.py
-├── requirements.txt
-├── hooks/
-│   └── hook-PIL.py
-├── README.md
-└── .gitignore
 
 
 ## License
