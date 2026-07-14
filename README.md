@@ -62,7 +62,7 @@ python ./src/catwalk.py
 
 Example:
 ```
-python catwalk.py 10
+python ./src/catwalk.py 10
 ```
 will show a new cat every 10 seconds.
 
