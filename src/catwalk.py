@@ -78,6 +78,8 @@ root.attributes("-fullscreen", True)
 root.configure(bg="black")
 root.config(cursor="none")
 
+icon = tk.PhotoImage(file="assets/catwalk.png")
+root.iconphoto(True, icon)
 
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
