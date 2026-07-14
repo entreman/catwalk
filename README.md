@@ -149,3 +149,7 @@ Feel free to use, modify, and share this project.
 ---
 
 Made with Python, curiosity, and an unreasonable amount of cats. 🐈
+
+
+## Mentions
+- Schwarz Katze Icon by Chanut is Industries on <a href="https://icon-icons.com/de/authors/283-chanut-is-industries">Icon-Icons.com</a>
