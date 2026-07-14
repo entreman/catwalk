@@ -117,6 +117,7 @@ pip install pyinstaller
 ```
 
 Build:
+
 **Linux**
 ```
 pyinstaller \
