@@ -73,9 +73,11 @@ stop_event = threading.Event()
 
 
 root = tk.Tk()
+root.title("Catwalk")
 root.attributes("-fullscreen", True)
 root.configure(bg="black")
 root.config(cursor="none")
+
 
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
