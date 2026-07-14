@@ -16,11 +16,11 @@ Catwalk downloads random cat images from [CATAAS](https://cataas.com/) and displ
 
 ## Preview
 
-![Catwalk screenshot](docs/Screenshot1.png)
+![Catwalk screenshot](doc/Screenshot1.png)
 
 ## Demo
 
-![Catwalk demo](docs/demo.gif)
+![Catwalk demo](doc/demo.gif)
 
 ## Download
 
