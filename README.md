@@ -16,17 +16,139 @@ Catwalk downloads random cat images from [CATAAS](https://cataas.com/) and displ
 
 ## Installation
 
-Clone the repository:
+### Clone the repository:
 
 ```bash
 git clone <repository-url>
 cd catwalk
-python3 -m venv .venv
+```
+
+
+### Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+
+### Activate it:
+
+#### Linux
+```bash
+source .venv/bin/activate
+```
+#### Windows
+```bat
+.venv\Scripts\activate
+```
+
+### Install dependencies:
+
+```
 pip install -r requirements.txt
 ```
 
-## Run
+## Usage
 
-```bash
+### Start Catwalk:
+```
 python catwalk.py
 ```
+
+### Default delay:
+3 seconds per image
+
+### Set a custom delay:
+```
+python catwalk.py 5
+```
+
+Example:
+```
+python catwalk.py 10
+```
+will show a new cat every 10 seconds.
+
+## Controls
+| Key   | Action               |
+| ----- | -------------------- |
+| `ESC` | Exit fullscreen mode |
+
+
+## How it works
+
+Catwalk uses a simple producer-consumer design:
+
+          +----------------+
+          |  CATAAS API    |
+          +-------+--------+
+                  |
+                  v
+          +----------------+
+          | Downloader     |
+          | (background)   |
+          +-------+--------+
+                  |
+                  v
+          +----------------+
+          | Queue (10 cats)|
+          +-------+--------+
+                  |
+                  v
+          +----------------+
+          | Fullscreen GUI |
+          +----------------+
+
+The downloader fetches images in the background while the viewer displays them. A queue keeps the two parts independent and prevents the display from blocking on network requests.
+
+## Dependencies
+Python 3
+Pillow
+Requests
+Tkinter (usually included with Python)
+
+Install with:
+```
+pip install -r requirements.txt
+```
+
+## Building a standalone executable
+
+Install PyInstaller:
+```
+pip install pyinstaller
+```
+
+Build:
+```
+pyinstaller --onefile --windowed catwalk.py
+```
+
+The executable will be created in:
+```
+dist/
+```
+
+Build separately on each target platform:
+
+- Linux → Linux executable
+- Windows → .exe
+
+
+## Project structure
+catwalk/
+├── catwalk.py
+├── requirements.txt
+├── hooks/
+│   └── hook-PIL.py
+├── README.md
+└── .gitignore
+
+
+## License
+
+Feel free to use, modify, and share this project.
+
+---
+
+Made with Python, curiosity, and an unreasonable amount of cats. 🐈
