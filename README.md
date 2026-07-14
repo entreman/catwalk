@@ -52,7 +52,7 @@ pip install -r requirements.txt
 
 ### Start Catwalk:
 ```
-python catwalk.py
+python ./src/catwalk.py
 ```
 
 ### Default delay:
@@ -62,7 +62,7 @@ python catwalk.py
 
 Example:
 ```
-python catwalk.py 10
+python ./src/catwalk.py 10
 ```
 will show a new cat every 10 seconds.
 
@@ -128,7 +128,7 @@ pyinstaller \
 
 **Windows**
 ```
-pyinstaller --onefile --hidden-import=PIL._tkinter_finder --name=Catwalk src\catwalk.py
+pyinstaller --onefile --hidden-import=PIL._tkinter_finder --windowed --name=Catwalk src\catwalk.py
 ```
 
 The executable will be created in:
