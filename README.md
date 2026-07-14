@@ -52,7 +52,7 @@ pip install -r requirements.txt
 
 ### Start Catwalk:
 ```
-python catwalk.py
+python ./src/catwalk.py
 ```
 
 ### Default delay:
