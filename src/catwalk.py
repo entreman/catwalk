@@ -9,7 +9,7 @@ import requests
 import tkinter as tk
 
 from PIL import Image, ImageTk
-
+from pathlib import Path
         
 URL = "https://cataas.com/cat"
 
@@ -78,7 +78,8 @@ root.attributes("-fullscreen", True)
 root.configure(bg="black")
 root.config(cursor="none")
 
-icon = tk.PhotoImage(file="assets/catwalk.png")
+icon_path = Path(__file__).parent.parent / "assets" / "catwalk.png"
+icon = tk.PhotoImage(file=icon_path)
 root.iconphoto(True, icon)
 
 screen_width = root.winfo_screenwidth()
