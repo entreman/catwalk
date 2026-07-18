@@ -13,10 +13,23 @@ import sys
 from PIL import Image, ImageTk
 from pathlib import Path
 
+
 from slideshowcontroller import SlideshowController
         
 URL = "https://cataas.com/cat"
 
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "delay",
+    nargs="?",
+    type=int,
+    default=3,
+    help="seconds between downloads"
+)
+args = parser.parse_args()
+controller = SlideshowController(delay=args.delay)
 
 
 def resource_path(relative_path):
@@ -35,6 +48,7 @@ def downloader(stop_event, image_queue):
 
             # wait until there is room
             image_queue.put(image, timeout=1)
+            print(f"Queue Size: {image_queue.qsize()}")
 
         except queue.Full:
             pass
@@ -47,7 +61,7 @@ def downloader(stop_event, image_queue):
 def update_image():
     if not controller.paused:
         try:
-            image = image_queue.get_nowait()
+            image = controller.get_current_image()
 
             image.thumbnail((screen_width, screen_height))
 
@@ -67,20 +81,9 @@ def shutdown(event=None):
     root.destroy()
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "delay",
-    nargs="?",
-    type=int,
-    default=3,
-    help="seconds between downloads"
-)
-
-args = parser.parse_args()
-controller = SlideshowController(delay=args.delay)
 
 
-image_queue = queue.Queue(maxsize=10)
+#image_queue = queue.Queue(maxsize=10)
 stop_event = threading.Event()
 
 
@@ -103,7 +106,7 @@ label.pack(expand=True)
 
 threading.Thread(
     target=downloader,
-    args=(stop_event, image_queue),
+    args=(stop_event, controller.image_queue),
     daemon=True
 ).start()
 
@@ -112,6 +115,8 @@ root.bind("<Escape>", shutdown)
 root.bind("<space>", lambda e: controller.toggle_pause())
 root.bind("<Up>", lambda e: controller.decrease_delay())
 root.bind("<Down>", lambda e: controller.increase_delay())
+root.bind("<Left>", lambda e: controller.previous_image())
+root.bind("<Right>", lambda e: controller.next_image())
 
 update_image()
 
