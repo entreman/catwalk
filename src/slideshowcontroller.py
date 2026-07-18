@@ -10,7 +10,10 @@ class SlideshowController:
         print(f"Increase delay to: {self.delay}")
 
     def decrease_delay(self):
-        self.delay = max(0, self.delay - 1)
+        if self.delay > 1:
+            self.delay = self.delay - 1
+        else:
+            self.delay = max(0.1, self.delay - 0.1)
         print(f"Decrease delay to: {self.delay}")
 
     def toggle_pause(self):

@@ -12,8 +12,11 @@ import sys
 
 from PIL import Image, ImageTk
 from pathlib import Path
+
+from slideshowcontroller import SlideshowController
         
 URL = "https://cataas.com/cat"
+
 
 
 def resource_path(relative_path):
@@ -22,7 +25,7 @@ def resource_path(relative_path):
     return Path(__file__).resolve().parent.parent / relative_path
 
 
-def downloader(stop_event, image_queue, delay):
+def downloader(stop_event, image_queue):
     while not stop_event.is_set():
         try:
             response = requests.get(URL, timeout=10)
@@ -39,24 +42,24 @@ def downloader(stop_event, image_queue, delay):
         except Exception as e:
             print("Download error:", e)
 
-        stop_event.wait(delay)
 
 
 def update_image():
-    try:
-        image = image_queue.get_nowait()
+    if not controller.paused:
+        try:
+            image = image_queue.get_nowait()
 
-        image.thumbnail((screen_width, screen_height))
+            image.thumbnail((screen_width, screen_height))
 
-        photo = ImageTk.PhotoImage(image)
+            photo = ImageTk.PhotoImage(image)
 
-        label.configure(image=photo)
-        label.image = photo
+            label.configure(image=photo)
+            label.image = photo
 
-    except queue.Empty:
-        pass
+        except queue.Empty:
+            pass
 
-    root.after(100, update_image)
+    root.after(int(controller.delay * 1000), update_image)
 
 
 def shutdown(event=None):
@@ -74,6 +77,7 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+controller = SlideshowController(delay=args.delay)
 
 
 image_queue = queue.Queue(maxsize=10)
@@ -99,12 +103,15 @@ label.pack(expand=True)
 
 threading.Thread(
     target=downloader,
-    args=(stop_event, image_queue, args.delay),
+    args=(stop_event, image_queue),
     daemon=True
 ).start()
 
 
 root.bind("<Escape>", shutdown)
+root.bind("<space>", lambda e: controller.toggle_pause())
+root.bind("<Up>", lambda e: controller.decrease_delay())
+root.bind("<Down>", lambda e: controller.increase_delay())
 
 update_image()
 
