@@ -14,6 +14,7 @@ class CatwalkApp:
         self.URL = "https://cataas.com/cat"
         self.delay = delay
         self.paused = False
+        self.miliseconds_before_ui_hides = int(3 * 1000) # ms
         self.controller = SlideshowController(self.delay)
 
 
@@ -53,8 +54,13 @@ class CatwalkApp:
             self.root, 
             bg="gray", 
             height=50)
-            
-        self.control_bar.pack(side=tk.BOTTOM, fill=tk.X)
+
+        self.control_bar.place(
+            relx=0.5,
+            rely=1.0,
+            anchor="s",
+            relwidth=1.0
+        )
 
         self.previous_button = tk.Button(
             self.control_bar,
@@ -75,6 +81,14 @@ class CatwalkApp:
         self.play_button.pack(side=tk.LEFT)
         self.next_button.pack(side=tk.LEFT)
 
+        # Control Bar Bindings:
+        self.control_bar.bind("<Enter>", self.mouse_enter_bar)
+        self.control_bar.bind("<Leave>", self.mouse_leave_bar)
+
+        self.mouse_over_bar = False
+
+        self.start_ui_hide_timer()
+
     def _init_keybinds(self):
         self.root.bind("<Escape>", self.shutdown)
         self.root.bind("<space>", self.on_space)
@@ -84,6 +98,7 @@ class CatwalkApp:
         self.root.bind("<Right>", self.on_right)
         self.root.bind("<Key-d>", self.on_d)
         self.root.bind("<Key-D>", self.on_d)
+        self.root.bind("<Motion>", self.mouse_moved)
 
     def on_left(self, event=None):
         self.show_previous()
@@ -98,6 +113,51 @@ class CatwalkApp:
         print("D")
         self.controller.download_current_image()
         
+    def mouse_moved(self, event=None):
+        self.show_ui()
+
+    def mouse_enter_bar(self, event=None):
+        print("enter_bar")
+        self.mouse_over_bar = True
+
+    def mouse_leave_bar(self, event=None):
+        print("leave bar")
+        self.mouse_over_bar = False
+        self.reset_ui_hide_timer()
+
+
+
+    def hide_ui(self):
+        if self.mouse_over_bar:
+            return
+
+        print("hide UI")
+        self.control_bar.place_forget()
+        self.root.config(cursor="none")
+
+    def show_ui(self):
+        print("show UI")
+        self.control_bar.place(
+            relx=0.5,
+            rely=1.0,
+            anchor="s",
+            relwidth=1.0
+        )
+        self.root.config(cursor="")
+        self.reset_ui_hide_timer()
+
+
+    def start_ui_hide_timer(self):
+        self.ui_timer_id = self.root.after(self.miliseconds_before_ui_hides, self.hide_ui)
+
+    def stop_ui_hide_timer(self):
+        if self.ui_timer_id:
+            self.root.after_cancel(self.ui_timer_id)
+            self.ui_timer_id = None
+
+    def reset_ui_hide_timer(self):
+        self.stop_ui_hide_timer()
+        self.start_ui_hide_timer()
 
 
     def downloader(self, stop_event, image_queue, url):
