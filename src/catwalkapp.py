@@ -15,14 +15,16 @@ class CatwalkApp:
         self.delay = delay
         self.paused = False
         self.controller = SlideshowController(self.delay)
-        
+
+
         #image_queue = queue.Queue(maxsize=10)
         self.stop_event = threading.Event()
         self.start_downloader()
-
+        
         self._init_gui()
         self._init_keybinds()
 
+        self.controller.next_image()
         self.start_timer() # Call it only after self._init_gui()
 
         
