@@ -55,12 +55,7 @@ class CatwalkApp:
             bg="gray", 
             height=50)
 
-        self.control_bar.place(
-            relx=0.5,
-            rely=1.0,
-            anchor="s",
-            relwidth=1.0
-        )
+        self.show_ui()
 
         self.previous_button = tk.Button(
             self.control_bar,
@@ -87,7 +82,6 @@ class CatwalkApp:
 
         self.mouse_over_bar = False
 
-        self.start_ui_hide_timer()
 
     def _init_keybinds(self):
         self.root.bind("<Escape>", self.shutdown)
@@ -141,7 +135,7 @@ class CatwalkApp:
             relx=0.5,
             rely=1.0,
             anchor="s",
-            relwidth=1.0
+            relwidth=0.5
         )
         self.root.config(cursor="")
         self.reset_ui_hide_timer()
@@ -151,7 +145,7 @@ class CatwalkApp:
         self.ui_timer_id = self.root.after(self.miliseconds_before_ui_hides, self.hide_ui)
 
     def stop_ui_hide_timer(self):
-        if self.ui_timer_id:
+        if hasattr(self, "ui_timer_id"):
             self.root.after_cancel(self.ui_timer_id)
             self.ui_timer_id = None
 
