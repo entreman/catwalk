@@ -52,6 +52,8 @@ class CatwalkApp:
         self.root.bind("<Down>", lambda e: self.controller.increase_delay())
         self.root.bind("<Left>", self.on_left)
         self.root.bind("<Right>", self.on_right)
+        self.root.bind("<Key-d>", self.on_d)
+        self.root.bind("<Key-D>", self.on_d)
 
     def on_left(self, event=None):
         self.show_previous()
@@ -61,6 +63,10 @@ class CatwalkApp:
 
     def on_space(self, event=None):
         self.toggle_pause()
+    
+    def on_d(self, event=None):
+        print("D")
+        self.controller.download_current_image()
         
 
 
@@ -114,6 +120,7 @@ class CatwalkApp:
             self.stop_timer()
         else:
             self.reset_timer()  # Start timer again, after being paused. 
+
 
     def update_image(self):
         try:
