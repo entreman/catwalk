@@ -87,7 +87,8 @@ class CatwalkApp:
             height=45,
             corner_radius=22.5,
             fg_color="#333333",
-            hover_color="#444444"
+            hover_color="#444444",
+            command=self.show_next
         )
 
         self.previous_button.pack(side="left", padx=10, pady=10)
