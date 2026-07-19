@@ -95,8 +95,31 @@ class CatwalkApp:
             "hover_color": "#444444"
         }
 
-        self.previous_button = ctk.CTkButton(
+        # --- left section ---
+        self.left_controls = ctk.CTkFrame(
             self.control_bar,
+            fg_color="transparent"
+        )
+
+        self.download_button = ctk.CTkButton(
+            self.left_controls,
+            text="⬇",
+            width=45,
+            height=40,
+            command=self.on_d
+        )
+
+        self.download_button.pack(side="left", padx=10, pady=10)
+
+
+        # --- center section ---
+        self.center_controls = ctk.CTkFrame(
+            self.control_bar,
+            fg_color="transparent"
+        )
+
+        self.previous_button = ctk.CTkButton(
+            self.center_controls,
             text="",
             image=self.previous_icon,
             command=self.show_previous,
@@ -104,7 +127,7 @@ class CatwalkApp:
         )
 
         self.play_pause_button = ctk.CTkButton(
-            self.control_bar,
+            self.center_controls,
             text="",
             image=self.pause_icon,
             command=self.toggle_pause,
@@ -112,7 +135,7 @@ class CatwalkApp:
         )
 
         self.next_button = ctk.CTkButton(
-            self.control_bar,
+            self.center_controls,
             text="",
             image=self.next_icon,
             command=self.show_next,
@@ -123,12 +146,76 @@ class CatwalkApp:
         self.play_pause_button.pack(side="left", padx=10, pady=10)
         self.next_button.pack(side="left", padx=10, pady=10)
 
+
+        # --- right section ---
+        self.right_controls = ctk.CTkFrame(
+            self.control_bar,
+            fg_color="transparent"
+        )
+
+        self.speed_down_button = ctk.CTkButton(
+            self.right_controls,
+            text="−",
+            width=40,
+            height=40,
+            command=self.controller.decrease_delay
+        )
+
+        self.speed_label = ctk.CTkLabel(
+            self.right_controls,
+            text=f"{self.controller.delay}s",
+            width=40
+        )
+
+        self.speed_up_button = ctk.CTkButton(
+            self.right_controls,
+            text="+",
+            width=40,
+            height=40,
+            command=self.controller.increase_delay
+        )
+
+        self.speed_down_button.pack(side="left", padx=5, pady=10)
+
+        self.speed_label.pack(side="left", padx=5, pady=10)
+
+        self.speed_up_button.pack(side="left", padx=5, pady=10)
+        # --- right section end ---
+
+
+        # Pack the three groups
+        self.left_controls.pack(
+            side="left",
+            padx=20
+        )
+
+        self.center_controls.pack(
+            side="left",
+            padx=20
+        )
+
+        self.right_controls.pack(
+            side="left",
+            padx=20
+        )
+
+
         # Bind Enter, for all control bar elements
         for widget in [
             self.control_bar,
+            
+            self.left_controls,
+            self.download_button,
+            
+            self.center_controls,
             self.previous_button,
             self.play_pause_button,
-            self.next_button
+            self.next_button,
+            
+            self.right_controls,
+            self.speed_down_button,
+            self.speed_label,
+            self.speed_up_button
         ]:
             widget.bind("<Enter>", self.mouse_enter_bar)
             widget.bind("<Leave>", self.mouse_leave_bar)
