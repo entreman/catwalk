@@ -10,8 +10,8 @@ class SlideshowController:
         self.maxlength = 20
         self.current_index = -1
         self.downloaded_queue = queue.Queue(maxsize=self.maxlength)
-        self.history = deque(maxlen=100)
-        self.presentation_queue = queue.Queue(maxsize=self.maxlength)
+        self.history = deque(maxlen=self.maxlength)
+        self.presentation_queue = queue.Queue(maxsize=self.maxlength) # probably only 1 or 2 elements needed. but i am not sure
 
 
     def increase_delay(self):
@@ -55,7 +55,7 @@ class SlideshowController:
     def fetch_next_image_from_downloaded_queue(self):
         try:
             image = self.downloaded_queue.get_nowait()
-            self.history.append(image)
+            self._history_append(image)
             return True
 
         except queue.Empty:
@@ -63,6 +63,12 @@ class SlideshowController:
 
         print(f"History Size: {len(self.history)}")
 
+    def _history_append(self, image):
+        if len(self.history) == self.history.maxlen:
+            self.history.popleft()
+            self.current_index -= 1
+
+        self.history.append(image)
 
     def get_current_image(self):
         image = self.presentation_queue.get_nowait()
