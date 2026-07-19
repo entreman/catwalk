@@ -101,8 +101,6 @@ class CatwalkApp:
             size=(16, 16)
         )
 
-
-
     def _init_control_bar(self):
         self._init_control_bar_icons()
 
@@ -183,10 +181,10 @@ class CatwalkApp:
             text="",
             **button_config,
             image=self.delay_down_icon,
-            command=self.controller.decrease_delay
+            command=self.decrease_delay
         )
 
-        self.speed_label = ctk.CTkLabel(
+        self.delay_label = ctk.CTkLabel(
             self.right_controls,
             text=f"{self.controller.delay}s",
             width=40
@@ -197,12 +195,12 @@ class CatwalkApp:
             text="",
             **button_config,
             image=self.delay_up_icon,
-            command=self.controller.increase_delay
+            command=self.increase_delay
         )
 
         self.delay_down_button.pack(side="left", padx=5, pady=10)
 
-        self.speed_label.pack(side="left", padx=5, pady=10)
+        self.delay_label.pack(side="left", padx=5, pady=10)
 
         self.delay_up_button.pack(side="left", padx=5, pady=10)
         # --- right section end ---
@@ -239,7 +237,7 @@ class CatwalkApp:
             
             self.right_controls,
             self.delay_down_button,
-            self.speed_label,
+            self.delay_label,
             self.delay_up_button
         ]:
             widget.bind("<Enter>", self.mouse_enter_bar)
@@ -257,8 +255,8 @@ class CatwalkApp:
     def _init_keybinds(self):
         self.root.bind("<Escape>", self.shutdown)
         self.root.bind("<space>", self.on_space)
-        self.root.bind("<Up>", lambda e: self.controller.decrease_delay())
-        self.root.bind("<Down>", lambda e: self.controller.increase_delay())
+        self.root.bind("<Up>", lambda e: self.decrease_delay())
+        self.root.bind("<Down>", lambda e: self.increase_delay())
         self.root.bind("<Left>", self.on_left)
         self.root.bind("<Right>", self.on_right)
         self.root.bind("<Key-d>", self.on_d)
@@ -420,6 +418,26 @@ class CatwalkApp:
             image=self.download_icon
         )
     
+
+    def increase_delay(self):
+        self.controller.increase_delay()
+        self.update_delay_label()
+
+    def decrease_delay(self):
+        self.controller.decrease_delay()
+        self.update_delay_label()
+        self.reset_timer()
+
+    def update_delay_label(self):
+        if self.controller.delay.is_integer():
+            text = f"{int(self.controller.delay)}s"
+        else:
+            text = f"{self.controller.delay:.1f}s"
+        
+        self.delay_label.configure(
+            text=text
+        )
+
 
     def shutdown(self, event=None):
         self.stop_event.set()

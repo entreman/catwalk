@@ -17,7 +17,10 @@ class SlideshowController:
 
 
     def increase_delay(self):
-        self.delay += 1
+        if self.delay < 1:
+            self.delay = min(1, self.delay + 0.1)
+        else:
+            self.delay += 1
         print(f"Increase delay to: {self.delay}")
 
     def decrease_delay(self):
