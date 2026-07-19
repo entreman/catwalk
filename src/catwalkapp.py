@@ -64,7 +64,8 @@ class CatwalkApp:
             height=45,
             corner_radius=22.5,
             fg_color="#333333",
-            hover_color="#444444"
+            hover_color="#444444",
+            command=self.show_previous
         )
 
         self.play_button = ctk.CTkButton(
