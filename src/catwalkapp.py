@@ -33,7 +33,7 @@ class CatwalkApp:
         self.root.title("Catwalk")
         self.root.attributes("-fullscreen", True)
         self.root.configure(bg="black")
-        self.root.config(cursor="none")
+        #self.root.config(cursor="none")
 
         icon_path = "assets/catwalk.png"
         icon = tk.PhotoImage(file=resource_path(icon_path))
@@ -44,6 +44,36 @@ class CatwalkApp:
 
         self.label = tk.Label(self.root, bg="black")
         self.label.pack(expand=True)
+
+
+        self._init_control_bar()
+
+    def _init_control_bar(self):
+        self.control_bar = tk.Frame(
+            self.root, 
+            bg="gray", 
+            height=50)
+            
+        self.control_bar.pack(side=tk.BOTTOM, fill=tk.X)
+
+        self.previous_button = tk.Button(
+            self.control_bar,
+            text="◀"
+        )
+
+        self.play_button = tk.Button(
+            self.control_bar,
+            text="⏸"
+        )
+
+        self.next_button = tk.Button(
+            self.control_bar,
+            text="▶"
+        )
+
+        self.previous_button.pack(side=tk.LEFT)
+        self.play_button.pack(side=tk.LEFT)
+        self.next_button.pack(side=tk.LEFT)
 
     def _init_keybinds(self):
         self.root.bind("<Escape>", self.shutdown)
