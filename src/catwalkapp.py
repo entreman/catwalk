@@ -89,6 +89,19 @@ class CatwalkApp:
             size=(18, 18)
         )
 
+        self.delay_down_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/minus_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/minus_interface_icon_dark.png")),
+            size=(16, 16)
+        )
+
+        self.delay_up_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/plus_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/plus_interface_icon_dark.png")),
+            size=(16, 16)
+        )
+
+
 
     def _init_control_bar(self):
         self._init_control_bar_icons()
@@ -165,11 +178,11 @@ class CatwalkApp:
             fg_color="transparent"
         )
 
-        self.speed_down_button = ctk.CTkButton(
+        self.delay_down_button = ctk.CTkButton(
             self.right_controls,
-            text="−",
-            width=40,
-            height=40,
+            text="",
+            **button_config,
+            image=self.delay_down_icon,
             command=self.controller.decrease_delay
         )
 
@@ -179,19 +192,19 @@ class CatwalkApp:
             width=40
         )
 
-        self.speed_up_button = ctk.CTkButton(
+        self.delay_up_button = ctk.CTkButton(
             self.right_controls,
-            text="+",
-            width=40,
-            height=40,
+            text="",
+            **button_config,
+            image=self.delay_up_icon,
             command=self.controller.increase_delay
         )
 
-        self.speed_down_button.pack(side="left", padx=5, pady=10)
+        self.delay_down_button.pack(side="left", padx=5, pady=10)
 
         self.speed_label.pack(side="left", padx=5, pady=10)
 
-        self.speed_up_button.pack(side="left", padx=5, pady=10)
+        self.delay_up_button.pack(side="left", padx=5, pady=10)
         # --- right section end ---
 
 
@@ -225,9 +238,9 @@ class CatwalkApp:
             self.next_button,
             
             self.right_controls,
-            self.speed_down_button,
+            self.delay_down_button,
             self.speed_label,
-            self.speed_up_button
+            self.delay_up_button
         ]:
             widget.bind("<Enter>", self.mouse_enter_bar)
             widget.bind("<Leave>", self.mouse_leave_bar)
