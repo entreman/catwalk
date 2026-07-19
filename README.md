@@ -169,3 +169,6 @@ Made with Python, curiosity, and an unreasonable amount of cats. 🐈
 ## Mentions
 - Cat as a service - [CATAAS](https://cataas.com/)
 - Schwarz Katze Icon by Chanut is Industries on <a href="https://icon-icons.com/de/authors/283-chanut-is-industries">Icon-Icons.com</a>
+- Uicons by <a href="https://www.flaticon.com/uicons">Flaticon</a>
+- <a href="https://www.flaticon.com/free-icons/save" title="save icons">Save icons created by Bharat Icons - Flaticon</a>
+- <a href="https://www.flaticon.com/free-icons/done" title="done icons">Done icons created by iconmasadepan - Flaticon</a>
