@@ -56,50 +56,45 @@ class CatwalkApp:
             fg_color="#222222"
         )
 
+        button_config = {
+            "width": 50,
+            "height": 40,
+            "corner_radius": 22.5,
+            "font": ("DejaVu Sans", 22),
+            "fg_color": "#333333",
+            "hover_color": "#444444"
+        }
+
         self.previous_button = ctk.CTkButton(
             self.control_bar,
             text="◀",
-            font=("Arial", 18),
-            width=35,
-            height=45,
-            corner_radius=22.5,
-            fg_color="#333333",
-            hover_color="#444444",
-            command=self.show_previous
+            command=self.show_previous,
+            **button_config
         )
 
-        self.play_button = ctk.CTkButton(
+        self.play_pause_button = ctk.CTkButton(
             self.control_bar,
             text="⏸",
-            font=("Arial", 18),
-            width=35,
-            height=45,
-            corner_radius=22.5,
-            fg_color="#333333",
-            hover_color="#444444"
+            command=self.toggle_pause,
+            **button_config
         )
 
         self.next_button = ctk.CTkButton(
             self.control_bar,
             text="▶",
-            font=("Arial", 18),
-            width=35,
-            height=45,
-            corner_radius=22.5,
-            fg_color="#333333",
-            hover_color="#444444",
-            command=self.show_next
+            command=self.show_next,
+            **button_config
         )
 
         self.previous_button.pack(side="left", padx=10, pady=10)
-        self.play_button.pack(side="left", padx=10, pady=10)
+        self.play_pause_button.pack(side="left", padx=10, pady=10)
         self.next_button.pack(side="left", padx=10, pady=10)
 
         # Bind Enter, for all control bar elements
         for widget in [
             self.control_bar,
             self.previous_button,
-            self.play_button,
+            self.play_pause_button,
             self.next_button
         ]:
             widget.bind("<Enter>", self.mouse_enter_bar)
@@ -232,8 +227,10 @@ class CatwalkApp:
 
         if self.paused:
             self.stop_timer()
+            self.play_pause_button.configure(text="▶")
         else:
             self.reset_timer()  # Start timer again, after being paused. 
+            self.play_pause_button.configure(text="⏸")
 
 
     def update_image(self):
