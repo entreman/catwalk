@@ -52,7 +52,7 @@ class CatwalkApp:
     def _init_control_bar(self):
         self.control_bar = tk.Frame(
             self.root, 
-            bg="gray", 
+            bg="black", 
             height=50)
 
         self.show_ui()
@@ -133,7 +133,7 @@ class CatwalkApp:
         print("show UI")
         self.control_bar.place(
             relx=0.5,
-            rely=1.0,
+            rely=0.99,
             anchor="s",
             relwidth=0.5
         )
