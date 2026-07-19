@@ -106,7 +106,8 @@ class CatwalkApp:
 
         self.control_bar = ctk.CTkFrame(
             self.root,
-            fg_color="#222222"
+            fg_color="#222222",
+            corner_radius= 2
         )
 
         button_config = {
