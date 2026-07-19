@@ -77,6 +77,18 @@ class CatwalkApp:
             size=(24, 24)
         )
 
+        self.download_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/download_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/download_interface_icon_dark.png")),
+            size=(18, 18)
+        )
+
+        self.done_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/check_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/check_interface_icon_dark.png")),
+            size=(18, 18)
+        )
+
 
     def _init_control_bar(self):
         self._init_control_bar_icons()
@@ -103,9 +115,9 @@ class CatwalkApp:
 
         self.download_button = ctk.CTkButton(
             self.left_controls,
-            text="⬇",
-            width=45,
-            height=40,
+            text="",
+            image=self.download_icon,
+            **button_config,
             command=self.on_d
         )
 
@@ -252,6 +264,9 @@ class CatwalkApp:
     def on_d(self, event=None):
         print("D")
         self.controller.download_current_image()
+        self.download_button.configure(
+            image=self.done_icon
+        )
         
     def mouse_moved(self, event=None):
         self.show_ui()
@@ -380,9 +395,17 @@ class CatwalkApp:
         self.controller.previous_image()
         self.reset_timer()
 
+        self.download_button.configure(
+            image=self.download_icon
+        )
+
     def show_next(self):
         self.controller.next_image()
         self.reset_timer()
+
+        self.download_button.configure(
+            image=self.download_icon
+        )
     
 
     def shutdown(self, event=None):
