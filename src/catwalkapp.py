@@ -31,6 +31,8 @@ class CatwalkApp:
 
         
     def _init_gui(self):
+        ctk.set_appearance_mode("dark")
+
         self.root = ctk.CTk()
         self.root.title("Catwalk")
         self.root.attributes("-fullscreen", True)
@@ -50,7 +52,35 @@ class CatwalkApp:
 
         self._init_control_bar()
 
+    def _init_control_bar_icons(self):
+        self.play_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/play_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/play_interface_icon_dark.png")),
+            size=(24, 24)
+        )
+
+        self.pause_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/pause_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/pause_interface_icon_dark.png")),
+            size=(24, 24)
+        )
+
+        self.previous_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/previous_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/previous_interface_icon_dark.png")),
+            size=(24, 24)
+        )
+
+        self.next_icon = ctk.CTkImage(
+            light_image=Image.open(resource_path("assets/control_bar/next_interface_icon_light.png")),
+            dark_image=Image.open(resource_path("assets/control_bar/next_interface_icon_dark.png")),
+            size=(24, 24)
+        )
+
+
     def _init_control_bar(self):
+        self._init_control_bar_icons()
+
         self.control_bar = ctk.CTkFrame(
             self.root,
             fg_color="#222222"
@@ -67,21 +97,24 @@ class CatwalkApp:
 
         self.previous_button = ctk.CTkButton(
             self.control_bar,
-            text="◀",
+            text="",
+            image=self.previous_icon,
             command=self.show_previous,
             **button_config
         )
 
         self.play_pause_button = ctk.CTkButton(
             self.control_bar,
-            text="⏸",
+            text="",
+            image=self.pause_icon,
             command=self.toggle_pause,
             **button_config
         )
 
         self.next_button = ctk.CTkButton(
             self.control_bar,
-            text="▶",
+            text="",
+            image=self.next_icon,
             command=self.show_next,
             **button_config
         )
@@ -226,12 +259,17 @@ class CatwalkApp:
         print(f"Toggle pause: Currently paused: {self.paused}")
 
         if self.paused:
+            self.play_pause_button.configure(
+                image=self.play_icon
+            )
             self.stop_timer()
-            self.play_pause_button.configure(text="▶")
+            
         else:
+            self.play_pause_button.configure(
+                image=self.pause_icon
+            )
             self.reset_timer()  # Start timer again, after being paused. 
-            self.play_pause_button.configure(text="⏸")
-
+            
 
     def update_image(self):
         try:
