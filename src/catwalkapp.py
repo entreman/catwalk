@@ -66,6 +66,7 @@ class CatwalkApp:
     
     def on_d(self, event=None):
         print("D")
+        self.controller.download_current_image()
         
 
 
@@ -119,6 +120,7 @@ class CatwalkApp:
             self.stop_timer()
         else:
             self.reset_timer()  # Start timer again, after being paused. 
+
 
     def update_image(self):
         try:

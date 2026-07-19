@@ -1,6 +1,8 @@
-from collections import deque
 import queue
 import threading
+
+from collections import deque
+from helper import save_image
 
 
 class SlideshowController:
@@ -76,7 +78,10 @@ class SlideshowController:
 
     def get_current_image(self):
         image = self.presentation_queue.get_nowait()
+        if image:
+            self.current_image = image
         print(f"presentation_queue: {self.presentation_queue.qsize()}")
+        print(f"Current Image: {self.current_image}")
         return image        
     
     def present_image(self, image):
@@ -84,6 +89,13 @@ class SlideshowController:
         self.presentation_queue.put_nowait(image)
         print(f"presentation_queue: {self.presentation_queue.qsize()}")
 
+
+    def download_current_image(self):
+        if self.current_image is None:
+            return
+
+        path = save_image(self.current_image)
+        print(f"Saved Image to: {path}")
 
 
 if __name__ == "__main__":
