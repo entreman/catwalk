@@ -36,20 +36,20 @@ class SlideshowController:
             #self.next_image()
         
     def next_image(self):
-        print("next_image")
+        #print("next_image")
         self.current_index +=1
         if len(self.history) < self.current_index + 1:
             if not self.fetch_next_image_from_downloaded_queue():
                 self.current_index -= 1      
         image = self.history[self.current_index]
-        print(f"Current Image: {self.current_index+1}/{len(self.history)} [Downloaded: {self.downloaded_queue.qsize()}]")
+        #print(f"Current Image: {self.current_index+1}/{len(self.history)} [Downloaded: {self.downloaded_queue.qsize()}]")
         self.present_image(image)
 
     def previous_image(self):
-        print("previous_image")
+        #print("previous_image")
         if self.current_index > 0:
             self.current_index -= 1
-        print(f"Current Image: {self.current_index+1}/{len(self.history)} [Downloaded: {self.downloaded_queue.qsize()}]")
+        #print(f"Current Image: {self.current_index+1}/{len(self.history)} [Downloaded: {self.downloaded_queue.qsize()}]")
         image = self.history[self.current_index]
         self.present_image(image)
 
@@ -80,14 +80,14 @@ class SlideshowController:
         image = self.presentation_queue.get_nowait()
         if image:
             self.current_image = image
-        print(f"presentation_queue: {self.presentation_queue.qsize()}")
-        print(f"Current Image: {self.current_image}")
+        #print(f"presentation_queue: {self.presentation_queue.qsize()}")
+        #print(f"Current Image: {self.current_image}")
         return image        
     
     def present_image(self, image):
         # wait until there is room
         self.presentation_queue.put_nowait(image)
-        print(f"presentation_queue: {self.presentation_queue.qsize()}")
+        #print(f"presentation_queue: {self.presentation_queue.qsize()}")
 
 
     def download_current_image(self):
