@@ -1,4 +1,5 @@
 import tkinter as tk
+import customtkinter as ctk
 import requests
 import io
 import queue
@@ -30,10 +31,10 @@ class CatwalkApp:
 
         
     def _init_gui(self):
-        self.root = tk.Tk()
+        self.root = ctk.CTk()
         self.root.title("Catwalk")
         self.root.attributes("-fullscreen", True)
-        self.root.configure(bg="black")
+        self.root.configure(fg_color="black")
         #self.root.config(cursor="none")
 
         icon_path = "assets/catwalk.png"
@@ -50,37 +51,65 @@ class CatwalkApp:
         self._init_control_bar()
 
     def _init_control_bar(self):
-        self.control_bar = tk.Frame(
-            self.root, 
-            bg="black", 
-            height=50)
-
-        self.show_ui()
-
-        self.previous_button = tk.Button(
-            self.control_bar,
-            text="◀"
+        self.control_bar = ctk.CTkFrame(
+            self.root,
+            fg_color="#222222"
         )
 
-        self.play_button = tk.Button(
+        self.previous_button = ctk.CTkButton(
             self.control_bar,
-            text="⏸"
+            text="◀",
+            font=("Arial", 18),
+            width=35,
+            height=45,
+            corner_radius=22.5,
+            fg_color="#333333",
+            hover_color="#444444"
         )
 
-        self.next_button = tk.Button(
+        self.play_button = ctk.CTkButton(
             self.control_bar,
-            text="▶"
+            text="⏸",
+            font=("Arial", 18),
+            width=35,
+            height=45,
+            corner_radius=22.5,
+            fg_color="#333333",
+            hover_color="#444444"
         )
 
-        self.previous_button.pack(side=tk.LEFT)
-        self.play_button.pack(side=tk.LEFT)
-        self.next_button.pack(side=tk.LEFT)
+        self.next_button = ctk.CTkButton(
+            self.control_bar,
+            text="▶",
+            font=("Arial", 18),
+            width=35,
+            height=45,
+            corner_radius=22.5,
+            fg_color="#333333",
+            hover_color="#444444"
+        )
+
+        self.previous_button.pack(side="left", padx=10, pady=10)
+        self.play_button.pack(side="left", padx=10, pady=10)
+        self.next_button.pack(side="left", padx=10, pady=10)
+
+        # Bind Enter, for all control bar elements
+        for widget in [
+            self.control_bar,
+            self.previous_button,
+            self.play_button,
+            self.next_button
+        ]:
+            widget.bind("<Enter>", self.mouse_enter_bar)
+            widget.bind("<Leave>", self.mouse_leave_bar)
 
         # Control Bar Bindings:
         self.control_bar.bind("<Enter>", self.mouse_enter_bar)
         self.control_bar.bind("<Leave>", self.mouse_leave_bar)
 
         self.mouse_over_bar = False
+
+        self.show_ui()
 
 
     def _init_keybinds(self):
@@ -134,8 +163,7 @@ class CatwalkApp:
         self.control_bar.place(
             relx=0.5,
             rely=0.99,
-            anchor="s",
-            relwidth=0.5
+            anchor="s"
         )
         self.root.config(cursor="")
         self.reset_ui_hide_timer()
