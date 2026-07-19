@@ -53,6 +53,11 @@ class SlideshowController:
 
 
     def fetch_next_image_from_downloaded_queue(self):
+        if len(self.history) == 0:
+            image = self.downloaded_queue.get()
+            self._history_append(image)
+            return True
+        
         try:
             image = self.downloaded_queue.get_nowait()
             self._history_append(image)
@@ -61,7 +66,6 @@ class SlideshowController:
         except queue.Empty:
             return False
 
-        print(f"History Size: {len(self.history)}")
 
     def _history_append(self, image):
         if len(self.history) == self.history.maxlen:

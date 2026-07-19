@@ -13,6 +13,7 @@ class CatwalkApp:
     def __init__(self, delay=3):
         self.URL = "https://cataas.com/cat"
         self.delay = delay
+        self.paused = False
         self.controller = SlideshowController(self.delay)
         
         #image_queue = queue.Queue(maxsize=10)
@@ -21,6 +22,8 @@ class CatwalkApp:
 
         self._init_gui()
         self._init_keybinds()
+
+        self.start_timer() # Call it only after self._init_gui()
 
         
     def _init_gui(self):
@@ -42,17 +45,22 @@ class CatwalkApp:
 
     def _init_keybinds(self):
         self.root.bind("<Escape>", self.shutdown)
-        self.root.bind("<space>", lambda e: self.controller.toggle_pause())
+        self.root.bind("<space>", self.on_space)
         self.root.bind("<Up>", lambda e: self.controller.decrease_delay())
         self.root.bind("<Down>", lambda e: self.controller.increase_delay())
-        self.root.bind("<Left>", lambda e: self.controller.previous_image())
-        self.root.bind("<Right>", lambda e: self.controller.next_image())
+        self.root.bind("<Left>", self.on_left)
+        self.root.bind("<Right>", self.on_right)
 
-    def on_left(self):
+    def on_left(self, event=None):
         self.show_previous()
 
-    def on_right(self):
+    def on_right(self, event=None):
         self.show_next()
+
+    def on_space(self, event=None):
+        self.toggle_pause()
+        
+
 
     def downloader(self, stop_event, image_queue, url):
         while not stop_event.is_set():
@@ -79,6 +87,32 @@ class CatwalkApp:
             daemon=True
         ).start()
 
+
+    def start_timer(self):
+        self.timer_id = self.root.after(int(self.controller.delay * 1000), self.timer_tick)
+
+    def timer_tick(self):
+        self.show_next()
+
+    def reset_timer(self):
+        if not self.paused:
+            self.stop_timer()
+            self.start_timer()
+    
+    def stop_timer(self):
+        if self.timer_id:
+            self.root.after_cancel(self.timer_id)
+            self.timer_id = None
+    
+    def toggle_pause(self):
+        self.paused = not self.paused
+        print(f"Toggle pause: Currently paused: {self.paused}")
+
+        if self.paused:
+            self.stop_timer()
+        else:
+            self.reset_timer()  # Start timer again, after being paused. 
+
     def update_image(self):
         try:
             image = self.controller.get_current_image()
@@ -96,14 +130,14 @@ class CatwalkApp:
         self.root.after(10, self.update_image)
         #self.root.after(int(self.controller.delay * 1000), self.update_image)
 
+
     def show_previous(self):
         self.controller.previous_image()
-        self.update_image()
-
+        self.reset_timer()
 
     def show_next(self):
         self.controller.next_image()
-        self.update_image()
+        self.reset_timer()
     
 
     def shutdown(self, event=None):
